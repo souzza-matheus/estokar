@@ -1,0 +1,485 @@
+/*
+ * Base do design system, comum ao backoffice e ao coletor: tipografia, foco, ajustes globais do MudBlazor e os
+ * componentes próprios (cabeçalho de página, seção, indicador, status, estado vazio). Só usa variáveis de tokens.css.
+ */
+
+html, body {
+    margin: 0;
+    font-family: var(--wms-fonte);
+    font-size: 16px;
+    color: var(--wms-cor-texto);
+    background: var(--wms-cor-fundo);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+/* Algarismos de mesma largura onde há dados: colunas de números alinham e indicadores não "pulam" ao mudar. */
+.wms-num,
+.mud-table-cell,
+.mud-simple-table td,
+.wms-indicador-valor {
+    font-variant-numeric: tabular-nums;
+}
+
+.wms-num { text-align: right; white-space: nowrap; }
+/* Códigos (endereço, lote, SKU, número) não quebram no hífen. */
+.wms-codigo, .wms-data, .wms-nowrap, .mud-table-cell.wms-forte { white-space: nowrap; }
+th.wms-num .mud-button-root, th.wms-num > span { justify-content: flex-end; }
+.wms-mono { font-family: var(--wms-fonte-mono); font-size: 0.95em; }
+.wms-texto-2 { color: var(--wms-cor-texto-2); }
+.wms-forte { font-weight: var(--wms-peso-forte); }
+
+a { color: var(--wms-cor-primaria); }
+
+:focus-visible { outline: none; }
+/* O FocusOnNavigate leva o foco ao h1 a cada navegação, para o leitor de tela: sem anel visível nele. */
+h1:focus, h1[tabindex]:focus-visible { outline: none; box-shadow: none; }
+a:focus-visible,
+button:focus-visible,
+.mud-button-root:focus-visible,
+.mud-nav-link:focus-visible,
+[tabindex]:focus-visible {
+    box-shadow: var(--wms-foco);
+    border-radius: var(--wms-raio-md);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition-duration: 0ms !important; animation-duration: 0ms !important; }
+}
+
+/* Tela de carregamento e erro do Blazor (antes do primeiro render, só com tokens.css). */
+.wms-inicio {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--wms-espaco-4);
+    color: var(--wms-cor-texto-2);
+    font-size: var(--wms-texto-md);
+}
+.wms-inicio img { width: 40px; height: 40px; }
+.wms-inicio-barra {
+    width: 160px;
+    height: 3px;
+    border-radius: var(--wms-raio-pilula);
+    background: var(--wms-cor-fundo-2);
+    overflow: hidden;
+    position: relative;
+}
+.wms-inicio-barra::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    width: 40%;
+    background: var(--wms-cor-primaria);
+    border-radius: inherit;
+    animation: wms-carregando 1.1s ease-in-out infinite;
+}
+@keyframes wms-carregando { from { transform: translateX(-100%); } to { transform: translateX(250%); } }
+
+#blazor-error-ui {
+    display: none;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2000;
+    padding: var(--wms-espaco-3) var(--wms-espaco-6);
+    background: var(--wms-cor-alerta-suave);
+    color: var(--wms-cor-texto);
+    border-top: 1px solid var(--wms-cor-alerta);
+    font-size: var(--wms-texto-md);
+}
+#blazor-error-ui .reload { margin-left: var(--wms-espaco-2); font-weight: var(--wms-peso-forte); }
+#blazor-error-ui .dismiss { cursor: pointer; position: absolute; right: var(--wms-espaco-4); top: var(--wms-espaco-3); }
+
+/* ---------- MudBlazor: superfícies planas, com borda fina no lugar da sombra ---------- */
+
+.mud-paper.mud-elevation-1,
+.mud-table.mud-elevation-1,
+.mud-paper.mud-elevation-2,
+.mud-paper.mud-elevation-3,
+.mud-expand-panel.mud-elevation-1 {
+    box-shadow: none;
+    border: 1px solid var(--wms-cor-borda);
+}
+.mud-popover.mud-paper,
+.mud-dialog,
+.mud-snackbar { box-shadow: var(--wms-sombra-3); }
+.mud-paper { border-radius: var(--wms-raio-lg); }
+
+.mud-button-filled,
+.mud-button-filled:hover,
+.mud-button-filled:active { box-shadow: none; }
+.mud-button-root { border-radius: var(--wms-raio-md); }
+.mud-button-root.mud-button-size-medium { min-height: var(--wms-altura-controle); }
+
+.mud-alert { border-radius: var(--wms-raio-md); font-size: var(--wms-texto-md); }
+
+/* Tabelas: densas, cabeçalho discreto, linhas separadas só por uma borda. */
+.mud-table { border-radius: var(--wms-raio-lg); }
+.mud-table-container { border-radius: inherit; }
+.mud-table .mud-table-head .mud-table-cell,
+.mud-simple-table table thead th {
+    font-size: var(--wms-texto-xs);
+    font-weight: var(--wms-peso-medio);
+    color: var(--wms-cor-texto-2);
+    background: var(--wms-cor-fundo);
+    border-bottom: 1px solid var(--wms-cor-borda);
+    white-space: nowrap;
+    line-height: 1.3;
+}
+.mud-table .mud-table-body .mud-table-cell,
+.mud-simple-table table tbody td {
+    font-size: var(--wms-texto-sm);
+    border-bottom: 1px solid var(--wms-cor-borda);
+}
+.mud-table-dense .mud-table-row .mud-table-cell { padding-top: 8px; padding-bottom: 8px; }
+.mud-table .mud-table-body .mud-table-row:last-child .mud-table-cell,
+.mud-simple-table table tbody tr:last-child td { border-bottom: none; }
+.mud-table-toolbar { gap: var(--wms-espaco-3); flex-wrap: wrap; height: auto; min-height: 64px; padding-top: var(--wms-espaco-2); padding-bottom: var(--wms-espaco-2); }
+.mud-table-pagination { font-size: var(--wms-texto-sm); }
+.mud-table-hover .mud-table-row:hover { cursor: default; }
+.wms-linhas-clicaveis .mud-table-body .mud-table-row { cursor: pointer; }
+
+/* ---------- Componentes próprios ---------- */
+
+/* Cabeçalho da página: título, subtítulo e ações. */
+.wms-pagina-cabecalho {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--wms-espaco-4);
+    flex-wrap: wrap;
+    margin-bottom: var(--wms-espaco-6);
+}
+.wms-pagina-titulos { min-width: 0; flex: 1 1 320px; }
+.wms-pagina-linha { display: flex; align-items: center; gap: var(--wms-espaco-3); flex-wrap: wrap; }
+.wms-pagina-titulo {
+    margin: 0;
+    font-size: var(--wms-texto-2xl);
+    font-weight: var(--wms-peso-titulo);
+    letter-spacing: var(--wms-espacamento-titulo);
+    line-height: 1.25;
+    color: var(--wms-cor-texto);
+}
+.wms-pagina-subtitulo { margin: var(--wms-espaco-1) 0 0; color: var(--wms-cor-texto-2); font-size: var(--wms-texto-md); }
+.wms-pagina-acoes { display: flex; align-items: center; gap: var(--wms-espaco-2); flex-wrap: wrap; }
+
+/* Seção: bloco com título e conteúdo, sem caixa dentro de caixa. */
+.wms-secao {
+    background: var(--wms-cor-superficie);
+    border: 1px solid var(--wms-cor-borda);
+    border-radius: var(--wms-raio-lg);
+    margin-bottom: var(--wms-espaco-6);
+    min-width: 0;
+}
+.wms-secao-cabecalho {
+    display: flex;
+    align-items: center;
+    gap: var(--wms-espaco-3);
+    flex-wrap: wrap;
+    padding: var(--wms-espaco-3) var(--wms-espaco-4);
+    border-bottom: 1px solid var(--wms-cor-borda);
+    min-height: 52px;
+    box-sizing: border-box;
+}
+.wms-secao-titulo { margin: 0; font-size: var(--wms-texto-md); font-weight: var(--wms-peso-forte); color: var(--wms-cor-texto); }
+.wms-secao-descricao { margin: 0; font-size: var(--wms-texto-sm); color: var(--wms-cor-texto-2); }
+.wms-secao-acoes { margin-left: auto; display: flex; align-items: center; gap: var(--wms-espaco-2); flex-wrap: wrap; font-size: var(--wms-texto-sm); }
+.wms-secao-corpo { padding: var(--wms-espaco-4); }
+.wms-secao-corpo--tabela { padding: 0; overflow-x: auto; }
+.wms-secao-corpo--tabela .mud-table,
+.wms-secao-corpo--tabela .mud-simple-table { border: none; border-radius: 0 0 var(--wms-raio-lg) var(--wms-raio-lg); }
+.wms-secao .mud-paper.mud-elevation-1 { border: none; }
+
+/* Abas: só uma linha embaixo, sem caixa. */
+.wms-abas .mud-tabs-tabbar { background: transparent; border-bottom: 1px solid var(--wms-cor-borda); }
+.wms-abas .mud-tabs-tabbar .mud-tab { text-transform: none; font-weight: var(--wms-peso-medio); font-size: var(--wms-texto-md); min-width: 0; padding: 0 var(--wms-espaco-4); color: var(--wms-cor-texto-2); }
+.wms-abas .mud-tabs-tabbar .mud-tab.mud-tab-active { color: var(--wms-cor-primaria); }
+
+/* Células com texto longo (erros, destinos de webhook) quebram em vez de alargar a tabela. */
+.mud-table-cell.wms-celula-quebra { max-width: 320px; overflow-wrap: anywhere; }
+.wms-quebra { overflow-wrap: anywhere; }
+.wms-num-inline { font-variant-numeric: tabular-nums; }
+.wms-acoes-linha { display: inline-flex; align-items: center; gap: var(--wms-espaco-2); }
+.wms-linha-do-tempo.mud-timeline { padding: 0; }
+.wms-linha-do-tempo .mud-timeline-item-content { padding-bottom: var(--wms-espaco-3); }
+
+/* Lista simples com ação na direita (sugestões de onda, volumes). */
+.wms-lista-simples { list-style: none; margin: 0; padding: 0; }
+.wms-lista-simples li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--wms-espaco-3);
+    padding: var(--wms-espaco-2) 0;
+    border-bottom: 1px solid var(--wms-cor-borda);
+    font-size: var(--wms-texto-md);
+}
+.wms-lista-simples li:last-child { border-bottom: none; }
+.wms-lista-simples li > span:first-child { display: inline-flex; align-items: center; min-width: 0; }
+
+/* Segunda linha discreta numa célula (código do fornecedor, EAN) e linha filha (divergências). */
+.wms-celula-detalhe { display: block; font-size: var(--wms-texto-xs); color: var(--wms-cor-texto-2); }
+.wms-linha-filha { padding: var(--wms-espaco-2) var(--wms-espaco-4) var(--wms-espaco-3) var(--wms-espaco-10); background: var(--wms-cor-fundo); display: table-cell; }
+.wms-linha-filha .wms-status { margin: 2px var(--wms-espaco-1) 2px 0; }
+
+/* Pares rótulo e valor, nas telas de detalhe. */
+.wms-dados {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: var(--wms-espaco-4) var(--wms-espaco-6);
+    margin: 0;
+}
+.wms-dados dt { font-size: var(--wms-texto-xs); color: var(--wms-cor-texto-2); font-weight: var(--wms-peso-medio); margin-bottom: 2px; }
+.wms-dados dd { margin: 0; font-size: var(--wms-texto-md); color: var(--wms-cor-texto); overflow-wrap: anywhere; }
+
+/* Indicador: rótulo pequeno, número grande, detalhe opcional. */
+.wms-indicadores {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(168px, 1fr));
+    gap: var(--wms-espaco-4);
+    margin-bottom: var(--wms-espaco-6);
+}
+.wms-indicador {
+    display: flex;
+    flex-direction: column;
+    gap: var(--wms-espaco-1);
+    padding: var(--wms-espaco-4);
+    background: var(--wms-cor-superficie);
+    border: 1px solid var(--wms-cor-borda);
+    border-radius: var(--wms-raio-lg);
+    color: inherit;
+    text-decoration: none;
+    min-width: 0;
+    transition: border-color var(--wms-transicao);
+}
+a.wms-indicador:hover { border-color: var(--wms-cor-borda-forte); }
+.wms-indicador-rotulo {
+    display: flex;
+    align-items: center;
+    gap: var(--wms-espaco-2);
+    font-size: var(--wms-texto-sm);
+    font-weight: var(--wms-peso-medio);
+    color: var(--wms-cor-texto-2);
+}
+.wms-indicador-rotulo .mud-icon-root { font-size: 1.125rem; }
+.wms-indicador-valor {
+    font-size: var(--wms-texto-3xl);
+    font-weight: var(--wms-peso-forte);
+    letter-spacing: var(--wms-espacamento-titulo);
+    line-height: 1.15;
+    color: var(--wms-cor-texto);
+}
+.wms-indicador-detalhe { font-size: var(--wms-texto-xs); color: var(--wms-cor-texto-2); }
+.wms-indicador--sucesso .wms-indicador-rotulo .mud-icon-root { color: var(--wms-cor-sucesso); }
+.wms-indicador--alerta .wms-indicador-rotulo .mud-icon-root { color: var(--wms-cor-alerta); }
+.wms-indicador--erro .wms-indicador-rotulo .mud-icon-root { color: var(--wms-cor-erro); }
+.wms-indicador--info .wms-indicador-rotulo .mud-icon-root { color: var(--wms-cor-info); }
+.wms-indicador--primaria .wms-indicador-rotulo .mud-icon-root { color: var(--wms-cor-primaria); }
+
+/* Status: um só componente, cores semânticas vindas de StatusVisual. */
+.wms-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 22px;
+    padding: 0 var(--wms-espaco-2);
+    border-radius: var(--wms-raio-pilula);
+    font-size: var(--wms-texto-xs);
+    font-weight: var(--wms-peso-medio);
+    line-height: 1;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+.wms-status::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex: none; }
+.wms-status--neutro { background: var(--wms-cor-neutro-suave); color: var(--wms-cor-texto-2); }
+.wms-status--info { background: var(--wms-cor-info-suave); color: var(--wms-cor-info); }
+.wms-status--primaria { background: var(--wms-cor-primaria-suave); color: var(--wms-cor-primaria); }
+.wms-status--sucesso { background: var(--wms-cor-sucesso-suave); color: var(--wms-cor-sucesso); }
+.wms-status--alerta { background: var(--wms-cor-alerta-suave); color: var(--wms-cor-alerta); }
+.wms-status--erro { background: var(--wms-cor-erro-suave); color: var(--wms-cor-erro); }
+.wms-status--grande { height: 28px; padding: 0 var(--wms-espaco-3); font-size: var(--wms-texto-sm); }
+
+/* Estado vazio: ícone, frase curta e, se houver, a ação. */
+.wms-vazio {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--wms-espaco-2);
+    padding: var(--wms-espaco-10) var(--wms-espaco-4);
+    color: var(--wms-cor-texto-2);
+}
+.wms-vazio .mud-icon-root { font-size: 2rem; color: var(--wms-cor-borda-forte); }
+.wms-vazio-titulo { margin: 0; font-size: var(--wms-texto-md); font-weight: var(--wms-peso-forte); color: var(--wms-cor-texto); }
+.wms-vazio-texto { margin: 0; font-size: var(--wms-texto-sm); max-width: 420px; }
+.wms-vazio--compacto { padding: var(--wms-espaco-6) var(--wms-espaco-4); }
+
+/* Filtros e formulários em linha. */
+.wms-filtros { display: flex; align-items: center; gap: var(--wms-espaco-3); flex-wrap: wrap; }
+.wms-filtros > .mud-input-control, .wms-filtros > .mud-select { flex: 0 1 220px; min-width: 160px; margin: 0; }
+.wms-filtros > .wms-filtro-largo { flex-basis: 320px; }
+.wms-formulario { display: flex; align-items: flex-start; gap: var(--wms-espaco-3); flex-wrap: wrap; }
+.wms-formulario > .mud-input-control, .wms-formulario > .mud-select { flex: 1 1 200px; min-width: 160px; margin: 0; }
+.wms-formulario-acoes { display: flex; gap: var(--wms-espaco-2); align-items: center; margin-top: var(--wms-espaco-4); flex-wrap: wrap; }
+
+/* Escolha de arquivo com a cara de um campo; o input fica escondido, mas acessível pelo rótulo. */
+.wms-arquivo {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--wms-espaco-2);
+    height: 40px;
+    padding: 0 var(--wms-espaco-3);
+    border: 1px dashed var(--wms-cor-borda-forte);
+    border-radius: var(--wms-raio-md);
+    color: var(--wms-cor-texto-2);
+    font-size: var(--wms-texto-md);
+    cursor: pointer;
+    max-width: 320px;
+    box-sizing: border-box;
+    transition: border-color var(--wms-transicao), color var(--wms-transicao);
+}
+.wms-arquivo:hover, .wms-arquivo:focus-within { border-color: var(--wms-cor-primaria); color: var(--wms-cor-primaria); }
+.wms-arquivo span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.wms-arquivo input[type="file"] { position: absolute; width: 1px; height: 1px; opacity: 0; overflow: hidden; clip: rect(0 0 0 0); }
+
+/* Rótulo dos campos: peso normal, como texto de apoio (a cor segue a do MudBlazor: foco e erro). */
+:where(.mud-input-control) .mud-input-label { font-weight: var(--wms-peso-normal); font-size: var(--wms-texto-md); }
+
+/* Larguras de campo nos filtros e formulários em linha; no celular, todos ocupam a linha.
+   O MudSelect envolve o campo num .mud-select que cresce: com largura definida, ele não cresce. */
+.mud-select:has(> [class*="wms-campo-"]) { flex: none; }
+.wms-campo-xs { flex: 0 0 120px; width: 120px; margin: 0; }
+.wms-campo-sm { flex: 0 0 160px; width: 160px; margin: 0; }
+.wms-campo-md { flex: 0 0 220px; width: 220px; margin: 0; }
+.wms-campo-lg { flex: 0 0 280px; width: 280px; margin: 0; }
+.wms-campo-xl { flex: 1 1 360px; min-width: 240px; margin: 0; }
+@media (max-width: 599px) {
+    .wms-campo-sm, .wms-campo-md,
+    .wms-campo-lg, .wms-campo-xl { flex: 1 1 100%; width: 100%; }
+    .mud-select:has(> [class*="wms-campo-"]) { flex: 1 1 100%; }
+}
+
+/* Logo: símbolo e nome. */
+.wms-logo { display: inline-flex; align-items: center; gap: var(--wms-espaco-2); color: var(--wms-cor-texto); text-decoration: none; min-width: 0; }
+.wms-logo img { width: 28px; height: 28px; flex: none; display: block; }
+.wms-logo-textos { display: flex; flex-direction: column; min-width: 0; line-height: 1.2; }
+.wms-logo-nome { font-weight: var(--wms-peso-titulo); font-size: var(--wms-texto-md); letter-spacing: -0.01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.wms-logo-produto { font-size: var(--wms-texto-xs); color: var(--wms-cor-texto-2); font-weight: var(--wms-peso-medio); white-space: nowrap; }
+.wms-logo--grande img { width: 40px; height: 40px; }
+.wms-logo--grande .wms-logo-textos { display: flex; flex-direction: column; min-width: 0; line-height: 1.2; }
+.wms-logo-nome { font-size: var(--wms-texto-xl); }
+
+/* Grade de duas ou três colunas que vira uma no celular. */
+.wms-grade { display: grid; gap: var(--wms-espaco-6); grid-template-columns: repeat(12, minmax(0, 1fr)); }
+.wms-grade > * { grid-column: span 12; margin-bottom: 0; }
+@media (min-width: 960px) {
+    .wms-grade > .wms-col-4 { grid-column: span 4; }
+    .wms-grade > .wms-col-5 { grid-column: span 5; }
+    .wms-grade > .wms-col-6 { grid-column: span 6; }
+    .wms-grade > .wms-col-7 { grid-column: span 7; }
+    .wms-grade > .wms-col-8 { grid-column: span 8; }
+}
+.wms-grade + .wms-secao, .wms-grade + .wms-grade { margin-top: var(--wms-espaco-6); }
+
+/* Tabela simples (sem paginação) dentro de uma seção: mesma cara das tabelas do MudBlazor. */
+.wms-tabela-simples { width: 100%; border-collapse: collapse; font-size: var(--wms-texto-sm); }
+.wms-tabela-simples th {
+    text-align: left;
+    font-size: var(--wms-texto-xs);
+    font-weight: var(--wms-peso-medio);
+    color: var(--wms-cor-texto-2);
+    background: var(--wms-cor-fundo-2);
+    padding: var(--wms-espaco-2) var(--wms-espaco-4);
+    border-bottom: 1px solid var(--wms-cor-borda);
+    white-space: nowrap;
+}
+.wms-tabela-simples td { padding: var(--wms-espaco-2) var(--wms-espaco-4); border-bottom: 1px solid var(--wms-cor-borda); vertical-align: middle; }
+.wms-tabela-simples tbody tr:last-child td { border-bottom: none; }
+.wms-tabela-simples th.wms-num, .wms-tabela-simples td.wms-num { text-align: right; }
+.wms-secao-aviso { margin: 0; padding: var(--wms-espaco-3) var(--wms-espaco-4); color: var(--wms-cor-alerta); background: var(--wms-cor-alerta-suave); font-size: var(--wms-texto-sm); }
+
+/* Cartões de conector (Integrações): um por canal, em grade que se ajusta à largura. */
+.wms-grade-cartoes { display: grid; gap: var(--wms-espaco-4); grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+.wms-cartao {
+    display: flex;
+    flex-direction: column;
+    gap: var(--wms-espaco-2);
+    padding: var(--wms-espaco-4);
+    background: var(--wms-cor-superficie);
+    border: 1px solid var(--wms-cor-borda);
+    border-radius: var(--wms-raio-lg);
+}
+.wms-cartao-topo { display: flex; align-items: center; justify-content: space-between; gap: var(--wms-espaco-2); }
+.wms-cartao .wms-formulario-acoes { margin-top: auto; flex-wrap: wrap; }
+.wms-texto-suave { color: var(--wms-cor-texto-2); font-size: var(--wms-texto-sm); }
+.wms-dados-compactos { gap: var(--wms-espaco-2); font-size: var(--wms-texto-sm); }
+
+/* Celular: o MudTable vira um cartão por registro, com o rótulo da coluna (DataLabel) à esquerda. */
+@media (max-width: 599.98px) {
+    .mud-xs-table .mud-table-body .mud-table-cell { border-bottom: none; }
+    .mud-xs-table .mud-table-body .mud-table-row .mud-table-cell:last-child { border-bottom: 1px solid var(--wms-cor-borda-forte); padding-bottom: var(--wms-espaco-3); }
+    .mud-xs-table .mud-table-body .mud-table-row .mud-table-cell:first-child { padding-top: var(--wms-espaco-3); }
+    .mud-xs-table .mud-table-cell::before { color: var(--wms-cor-texto-2); font-size: var(--wms-texto-xs); font-weight: var(--wms-peso-medio); }
+    .mud-xs-table .mud-table-body .mud-table-row:last-child .mud-table-cell:last-child { border-bottom: none; }
+}
+
+/* Planta do depósito (ADR 0024): o SVG usa metros como unidade do viewBox. */
+.wms-planta {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 18rem;
+    gap: var(--wms-espaco-4);
+    align-items: start;
+}
+@media (max-width: 960px) {
+    .wms-planta { grid-template-columns: 1fr; }
+}
+.wms-planta-mapa {
+    width: 100%;
+    max-height: 70vh;
+    background: var(--wms-cor-superficie);
+    border: 1px solid var(--wms-cor-borda);
+    border-radius: var(--wms-raio-md);
+}
+.wms-planta-piso { fill: none; stroke: var(--wms-cor-borda-forte); stroke-width: 0.08; stroke-dasharray: 0.4 0.3; }
+.wms-planta-doca circle { fill: var(--wms-cor-primaria); }
+.wms-planta-doca text { font-size: 0.9px; fill: var(--wms-cor-texto); }
+.wms-planta-ponto { cursor: pointer; }
+.wms-planta-ponto rect { fill: var(--wms-cor-info); stroke: var(--wms-cor-superficie); stroke-width: 0.06; }
+.wms-planta-ponto--pulmao rect { fill: var(--wms-cor-secundaria); }
+.wms-planta-ponto--doca rect, .wms-planta-ponto--expedicao rect { fill: var(--wms-cor-alerta); }
+.wms-planta-ponto--quarentena rect { fill: var(--wms-cor-erro); }
+.wms-planta-ponto:hover rect { stroke: var(--wms-cor-texto); }
+.wms-planta-ponto--selecionado rect { fill: var(--wms-cor-primaria); stroke: var(--wms-cor-texto); stroke-width: 0.12; }
+.wms-planta-campos { display: grid; grid-template-columns: 1fr 1fr; gap: var(--wms-espaco-2); }
+.wms-planta-setas { display: grid; grid-template-columns: repeat(3, auto); justify-content: center; }
+
+/* Assistente (ADR 0022). */
+.wms-assistente { display: flex; flex-direction: column; gap: var(--wms-espaco-3); max-width: 56rem; }
+.wms-assistente-sugestoes { display: flex; flex-wrap: wrap; gap: var(--wms-espaco-2); }
+.wms-assistente-mensagens { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--wms-espaco-3); }
+.wms-assistente-mensagem {
+    padding: var(--wms-espaco-3) var(--wms-espaco-4);
+    border-radius: var(--wms-raio-md);
+    border: 1px solid var(--wms-cor-borda);
+    background: var(--wms-cor-superficie);
+    max-width: 85%;
+}
+.wms-assistente-mensagem--usuario { align-self: flex-end; background: var(--wms-cor-fundo); }
+.wms-assistente-mensagem--assistente { align-self: flex-start; }
+.wms-assistente-texto { white-space: pre-wrap; overflow-wrap: anywhere; }
+.wms-assistente-ferramentas { display: flex; flex-wrap: wrap; gap: var(--wms-espaco-1, 4px); margin-top: var(--wms-espaco-2); }
+.wms-assistente-ferramenta {
+    font-size: 0.75rem;
+    padding: 0 var(--wms-espaco-2);
+    border-radius: 999px;
+    border: 1px solid var(--wms-cor-borda-forte);
+    color: var(--wms-cor-texto-2);
+}
+.wms-assistente-ferramenta--erro { border-color: var(--wms-cor-erro); }
+.wms-assistente-entrada { display: flex; gap: var(--wms-espaco-2); align-items: flex-start; flex-wrap: wrap; }
+.wms-assistente-entrada .mud-input-control { flex: 1 1 20rem; }

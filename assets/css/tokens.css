@@ -1,0 +1,142 @@
+/*
+ * Design tokens: a fonte única de cores, tipografia, espaços, raios, sombras e dimensões do backoffice (web e desktop)
+ * e do coletor. Componentes e telas usam só estas variáveis, nunca valores soltos.
+ *
+ * As cores são espelhadas em Tema/Tokens.cs, de onde sai o MudTheme. O teste TokensTests confere que os dois lados
+ * têm os mesmos valores: mude aqui e lá.
+ */
+
+@font-face {
+    /* Inter 4.1 (SIL OFL 1.1, ver fonts/LICENSE-Inter.txt), variável de 100 a 900, servida pelo próprio app. */
+    font-family: "Inter";
+    src: url("../fonts/InterVariable.woff2") format("woff2");
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+:root {
+    /* Cores: tema claro */
+    --wms-cor-primaria: #2347C5;
+    --wms-cor-primaria-hover: #1C3AA6;
+    --wms-cor-primaria-suave: #EBEFFC;
+    --wms-cor-sobre-primaria: #FFFFFF;
+    --wms-cor-secundaria: #475467;
+    --wms-cor-destaque: #F2A516;
+    --wms-cor-fundo: #F6F7F9;
+    --wms-cor-fundo-2: #EEF0F4;
+    --wms-cor-superficie: #FFFFFF;
+    --wms-cor-borda: #E2E5EB;
+    --wms-cor-borda-forte: #C9CED8;
+    --wms-cor-texto: #101828;
+    --wms-cor-texto-2: #535D6E;
+    --wms-cor-sucesso: #147A3D;
+    --wms-cor-sucesso-suave: #E7F5EC;
+    --wms-cor-alerta: #A35200;
+    --wms-cor-alerta-suave: #FDF1E2;
+    --wms-cor-erro: #C0262D;
+    --wms-cor-erro-suave: #FCEBEC;
+    --wms-cor-info: #0B6AA2;
+    --wms-cor-info-suave: #E5F2FA;
+    --wms-cor-neutro-suave: #EEF0F4;
+
+    /* Tipografia */
+    --wms-fonte: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --wms-fonte-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+    --wms-texto-xs: 0.75rem;     /* 12px: legendas, cabeçalho de tabela */
+    --wms-texto-sm: 0.8125rem;   /* 13px: células de tabela, labels */
+    --wms-texto-md: 0.875rem;    /* 14px: texto padrão */
+    --wms-texto-lg: 1rem;        /* 16px: subtítulos de seção */
+    --wms-texto-xl: 1.25rem;     /* 20px: título de cartão grande */
+    --wms-texto-2xl: 1.5rem;     /* 24px: título da página */
+    --wms-texto-3xl: 1.875rem;   /* 30px: valor de indicador */
+    --wms-peso-normal: 400;
+    --wms-peso-medio: 500;
+    --wms-peso-forte: 600;
+    --wms-peso-titulo: 650;
+    --wms-altura-linha: 1.5;
+    --wms-espacamento-titulo: -0.015em;
+
+    /* Espaços (grade de 4 px) */
+    --wms-espaco-1: 4px;
+    --wms-espaco-2: 8px;
+    --wms-espaco-3: 12px;
+    --wms-espaco-4: 16px;
+    --wms-espaco-5: 20px;
+    --wms-espaco-6: 24px;
+    --wms-espaco-8: 32px;
+    --wms-espaco-10: 40px;
+    --wms-espaco-12: 48px;
+
+    /* Raios e sombras: discretos; a separação vem de bordas finas e do fundo, não de sombra. */
+    --wms-raio-sm: 4px;
+    --wms-raio-md: 6px;
+    --wms-raio-lg: 10px;
+    --wms-raio-pilula: 999px;
+    --wms-sombra-1: 0 1px 2px rgba(16, 24, 40, 0.05);
+    --wms-sombra-2: 0 1px 3px rgba(16, 24, 40, 0.08), 0 1px 2px rgba(16, 24, 40, 0.04);
+    --wms-sombra-3: 0 12px 24px -6px rgba(16, 24, 40, 0.16), 0 4px 8px -4px rgba(16, 24, 40, 0.06);
+
+    /* Dimensões */
+    --wms-largura-menu: 248px;
+    --wms-largura-menu-recolhido: 64px;
+    --wms-altura-topo: 56px;
+    --wms-altura-controle: 36px;
+    --wms-altura-linha-tabela: 40px;
+    --wms-largura-conteudo: 1440px;
+    --wms-toque-min: 48px;
+
+    /* Estados */
+    --wms-foco: 0 0 0 3px rgba(35, 71, 197, 0.32);
+    --wms-opacidade-desabilitado: 0.48;
+    --wms-transicao: 120ms ease;
+}
+
+/* Tema escuro: o backoffice marca <html data-tema="escuro">. */
+[data-tema="escuro"] {
+    --wms-cor-primaria: #7C9BFF;
+    --wms-cor-primaria-hover: #9AB2FF;
+    --wms-cor-primaria-suave: #1E2A4A;
+    --wms-cor-sobre-primaria: #0C1017;
+    --wms-cor-secundaria: #A3ADBF;
+    --wms-cor-destaque: #F5B53D;
+    --wms-cor-fundo: #0C1017;
+    --wms-cor-fundo-2: #121722;
+    --wms-cor-superficie: #161C28;
+    --wms-cor-borda: #262E3D;
+    --wms-cor-borda-forte: #364055;
+    --wms-cor-texto: #E7EAF0;
+    --wms-cor-texto-2: #9AA4B6;
+    --wms-cor-sucesso: #4CC27A;
+    --wms-cor-sucesso-suave: #13291D;
+    --wms-cor-alerta: #F0A34A;
+    --wms-cor-alerta-suave: #2E2112;
+    --wms-cor-erro: #FF7A7F;
+    --wms-cor-erro-suave: #33171A;
+    --wms-cor-info: #5DB4EC;
+    --wms-cor-info-suave: #0F2534;
+    --wms-cor-neutro-suave: #1C2331;
+    --wms-sombra-1: 0 1px 2px rgba(0, 0, 0, 0.4);
+    --wms-sombra-2: 0 1px 3px rgba(0, 0, 0, 0.5);
+    --wms-sombra-3: 0 12px 24px -6px rgba(0, 0, 0, 0.6);
+    --wms-foco: 0 0 0 3px rgba(124, 155, 255, 0.4);
+}
+
+/* Coletor: alto contraste para luz forte de galpão, texto maior e alvos de toque de 56 px. */
+[data-app="coletor"] {
+    --wms-cor-primaria: #1F3FB4;
+    --wms-cor-primaria-hover: #183393;
+    --wms-cor-fundo: #FFFFFF;
+    --wms-cor-fundo-2: #F1F3F6;
+    --wms-cor-borda: #B9C0CC;
+    --wms-cor-borda-forte: #8C95A5;
+    --wms-cor-texto: #0A0F1A;
+    --wms-cor-texto-2: #3A4352;
+    --wms-cor-sucesso: #0F6B33;
+    --wms-cor-alerta: #8F4700;
+    --wms-cor-erro: #B01E25;
+    --wms-cor-info: #085E91;
+    --wms-texto-md: 1rem;
+    --wms-altura-controle: 56px;
+    --wms-toque-min: 56px;
+}

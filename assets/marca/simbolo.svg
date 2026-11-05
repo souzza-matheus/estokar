@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Símbolo">
+  <!-- Símbolo da marca: um palete com três volumes, o de cima em destaque. Cores de css/tokens.css. -->
+  <rect width="32" height="32" rx="8" fill="#2347C5"/>
+  <rect x="7.5" y="21.5" width="17" height="2.4" rx="1.2" fill="#FFFFFF"/>
+  <rect x="8.5" y="14.5" width="7" height="5.5" rx="1.4" fill="#FFFFFF"/>
+  <rect x="16.5" y="14.5" width="7" height="5.5" rx="1.4" fill="#FFFFFF" fill-opacity="0.72"/>
+  <rect x="12.5" y="7.5" width="7" height="5.5" rx="1.4" fill="#F2A516"/>
+</svg>
